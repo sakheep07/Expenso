@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+        .section-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4c8a9a;
+        }
+        .progress-bar {
+            background-color: #76c7c0;
+            height: 20px;
+            border-radius: 10px;
+        }
+        .progress-container {
+            background-color: #ddd;
+            border-radius: 10px;
+            height: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f6f9;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #76c7c0;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background-color: #5da5a0;
+        }
+        .actions a {
+            margin-right: 10px;
+            color: #76c7c0;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>User Dashboard</h1>
+
+    <!-- Overview of Finances -->
+    <div class="dashboard-section">
+        <div class="section-header">Overview of Finances</div>
+        <p>Current Balance: $<span th:text="${currentBalance}"></span></p>
+        <p>Total Income: $<span th:text="${totalIncome}"></span></p>
+        <p>Total Expenses: $<span th:text="${totalExpenses}"></span></p>
+        <p>Remaining Budget:</p>
+        <div class="progress-container">
+            <div class="progress-bar" th:style="'width'+ ${budgetProgressPercentage} + '%'"></div>
+        </div>
+    </div>
+
+    <!-- Expense Tracking Section -->
+    <div class="dashboard-section">
+		<section id="expense-tracking">
+		    <h2>Expense Tracking</h2>
+		    <!-- Include the content of expenses.html -->
+		    <div th:insert="expenses :: content"></div>
+		</section>
+    </div>
+
+    <!-- Budget Adherence Section -->
+    <div class="dashboard-section">
+        <div class="section-header">Budget Adherence</div>
+        <p>Category-wise spending breakdown:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Budget Used</th>
+                    <th>Limit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="budget : ${budgets}">
+                    <td th:text="${budget.category}"></td>
+                    <td><div class="progress-container">
+                            <div class="progress-bar" th:style="width: ${budget.percentUsed} + '%'"></div>
+                        </div>
+                    </td>
+                    <td th:text="${budget.limit}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Monthly Spending Insights Section -->
+    <div class="dashboard-section">
+        <div class="section-header">Monthly Spending Insights</div>
+        <div>
+            <canvas id="spendingChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="dashboard-section">
+        <div class="section-header">Quick Actions</div>
+        <a th:href="@{/user/add-expense}" class="btn">Add New Expense</a>
+        <a th:href="@{/user/add-income}" class="btn">Add New Income</a>
+        <a th:href="@{/user/set-budget}" class="btn">Set Budget</a>
+        <a th:href="@{/user/export-reports}" class="btn">Export Reports</a>
+    </div>
+</div>
+
+<!-- Include Chart.js for visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/dashboard.js}"></script>
+
+</body>
+</html>

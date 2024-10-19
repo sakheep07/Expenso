@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Expenses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            text-decoration: none;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 5px;
+        }
+        .edit-btn {
+            background-color: #28a745;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+    <div th:fragment="content">
+       <!-- <h2>Expense Tracking</h2> -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="expense : ${expenses}">
+                    <td th:text="${expense.date}"></td>
+                    <td th:text="${expense.category}"></td>
+                    <td th:text="${expense.amount}"></td>
+                    <td th:text="${expense.note}"></td>
+                    <td class="actions">
+                        <a class="btn edit-btn" th:href="@{/expenses/edit/{id}(id=${expense.id})}">Edit</a>
+                        <a class="btn delete-btn" th:href="@{/expenses/delete/{id}(id=${expense.id})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <a class="btn edit-btn" th:href="@{/expenses/add}">Add New Expense</a>
+        </div>
+    </div>
+
+</body>
+</html>
