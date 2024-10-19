@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Income Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('/images/income.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        .form-section, .list-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Income Management</h1>
+
+    <!-- Income Form Section -->
+    <div class="form-section">
+        <h2>Add New Income</h2>
+        <form action="#" th:action="@{/income/add}" th:object="${incomeDTO}" method="post"> <!-- Updated to incomeDTO -->
+            <div>
+                <label for="source">Source:</label>
+                <input type="text" id="source" th:field="*{source}" required/>
+            </div>
+            <div>
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" th:field="*{amount}" required/>
+            </div>
+            <div>
+                <label for="date">Date:</label>
+                <input type="date" id="date" th:field="*{date}" required/>
+            </div>
+            <div>
+                <label for="note">Note:</label>
+                <textarea id="note" th:field="*{note}"></textarea>
+            </div>
+            <button type="submit">Save Income</button>
+        </form>
+    </div>
+
+    <!-- Income List Section -->
+    <div class="list-section">
+        <h2>Income List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="income : ${incomes}">
+                    <td th:text="${income.source}"></td>
+                    <td th:text="${income.amount}"></td>
+                    <td th:text="${#dates.format(income.date, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${income.note}"></td>
+                    <td class="actions">
+                        <a th:href="@{/income/edit(id=${income.id})}">Edit</a>
+                        <a th:href="@{/income/delete(id=${income.id})}" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
