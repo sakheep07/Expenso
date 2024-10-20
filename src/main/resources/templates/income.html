@@ -99,7 +99,7 @@
     <!-- Income Form Section -->
     <div class="form-section">
         <h2>Add New Income</h2>
-        <form action="#" th:action="@{/income/add}" th:object="${incomeDTO}" method="post"> <!-- Updated to incomeDTO -->
+        <form action="#" th:action="@{/income/add}" th:object="${incomeDTO}" method="post">
             <div>
                 <label for="source">Source:</label>
                 <input type="text" id="source" th:field="*{source}" required/>
@@ -137,7 +137,7 @@
                 <tr th:each="income : ${incomes}">
                     <td th:text="${income.source}"></td>
                     <td th:text="${income.amount}"></td>
-                    <td th:text="${#dates.format(income.date, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${income.date != null ? #temporals.format(income.date, 'yyyy-MM-dd') : 'N/A'}"></td> <!-- Fixed date formatting -->
                     <td th:text="${income.note}"></td>
                     <td class="actions">
                         <a th:href="@{/income/edit(id=${income.id})}">Edit</a>

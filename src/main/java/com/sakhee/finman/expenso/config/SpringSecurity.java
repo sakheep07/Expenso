@@ -30,35 +30,35 @@ public class SpringSecurity {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public static PasswordEncoder passwordEncoder() {
+    static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-        .authorizeHttpRequests((authorize) -> 
-            authorize.requestMatchers("/register/**", "/login", "/index").permitAll()
+                .authorizeHttpRequests((authorize) ->
+                        authorize.requestMatchers("/register/**", "/login", "/index").permitAll()
+
+                                .requestMatchers("/admin-dashboard").hasRole("ADMIN")  // Admin only access
+                                .requestMatchers("/user-dashboard").hasRole("USER")
+                                .requestMatchers("/users").hasRole("ADMIN") // Admin only access for users
+                                .anyRequest().authenticated() // All other requests require authentication
             
-            .requestMatchers("/admin-dashboard").hasRole("ADMIN")  // Admin only access
-            .requestMatchers("/user-dashboard").hasRole("USER")
-            .requestMatchers("/users").hasRole("ADMIN") // Admin only access for users
-            .anyRequest().authenticated() // All other requests require authentication
-            
-        )
-            .formLogin(
-                form -> form
-                    .loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .successHandler(customSuccessHandler()) // Custom success handler
-                    .permitAll()
-            )
-            .csrf().disable()
-            .logout(
-                logout -> logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .permitAll()
-            );
+                )
+                .formLogin(
+                        form -> form
+                                .loginPage("/login")
+                                .loginProcessingUrl("/login")
+                                .successHandler(customSuccessHandler()) // Custom success handler
+                                .permitAll()
+                )
+                .csrf(csrf -> csrf.disable())
+                .logout(
+                        logout -> logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .permitAll()
+                );
         return http.build();
     }
 
@@ -71,7 +71,7 @@ public class SpringSecurity {
 
     // Custom success handler for role-based redirection
     @Bean
-    public AuthenticationSuccessHandler customSuccessHandler() {
+    AuthenticationSuccessHandler customSuccessHandler() {
         return new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request,
