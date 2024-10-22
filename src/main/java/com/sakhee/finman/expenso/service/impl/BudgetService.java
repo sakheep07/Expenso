@@ -60,13 +60,4 @@ public class BudgetService {
         dto.setSpentAmount(budget.getSpentAmount());
         return dto;
     }
-
-    private Budget convertToEntity(BudgetDTO budgetDTO) {
-        Budget budget = new Budget();
-        budget.setId(budgetDTO.getId());
-        budget.setCategory(budgetDTO.getCategory());
-        budget.setAllocatedAmount(budgetDTO.getAllocatedAmount());
-        budget.setSpentAmount(budgetDTO.getSpentAmount());
-        return budget;
-    }
 }
