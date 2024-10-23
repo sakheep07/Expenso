@@ -38,7 +38,8 @@ public class SpringSecurity {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**", "/login", "/index").permitAll()
+                        authorize.requestMatchers("/about-expenso", "/feedback", "/register/**",
+                        		"/login", "/index","/css/**", "/js/**").permitAll()
 
                                 .requestMatchers("/admin-dashboard").hasRole("ADMIN")  // Admin only access
                                 .requestMatchers("/user-dashboard").hasRole("USER")

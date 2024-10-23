@@ -1,45 +1,127 @@
 <!DOCTYPE html>
-<html lang="en"
-  xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expenso : Smart Finance Planning & Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #343a40;
+        }
+
+        h1 {
+            margin-top: 100px;
+            color: #333;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: #575c63;
+            padding-left: 20px;
+        }
+
+        .sidebar .social-icons {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .sidebar .social-icons a {
+            color: #ffffff;
+            font-size: 24px;
+            margin: 10px;
+        }
+
+        .container {
+            margin-left: 260px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Keyframe for subtle animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Expenso : Smart Finance Planning & Management </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
-                </li>
-            </ul>
+    <!-- Sidebar Menu -->
+    <div class="sidebar">
+        <a href="#" th:href="@{/register}"><i class="fas fa-user-plus"></i> Register</a>
+        <a href="#" th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="#" th:href="@{/about-expenso}"><i class="fas fa-info-circle"></i> About Expenso</a>
+        <a href="#" th:href="@{/feedback}"><i class="fas fa-comment-dots"></i> Feedback</a>
+
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-square"></i></a>
+            <a href="#"><i class="fab fa-instagram-square"></i></a>
+            <a href="#"><i class="fab fa-twitter-square"></i></a>
         </div>
     </div>
-</nav>
-<div class="container">
-    <div class="row">
-        <h1 class="text-center"> Welcome to Expenso </h1>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center">Welcome to Expenso</h1>
+            <p class="text-center">Your smart solution for financial planning and management</p>
+        </div>
     </div>
-</div>
 
-<!-- Footer if needed -->
-<footer class="footer mt-5">
-    <p class="text-center">&copy; Expenso</p>
-</footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Expenso. All rights reserved.</p>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-c7cD0bbRpjxXx85+phE2KBgHGNIJ/gj38t5p79AauMgyZL0owbsz2FIk5bDq7g5J" crossorigin="anonymous"></script>
+    <!-- Bootstrap and FontAwesome JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

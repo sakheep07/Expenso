@@ -20,7 +20,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
             font-size: 2em;
             color: #444;
@@ -30,7 +30,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            justify-content: center;
+            justify-content: space-around;
         }
 
         .goal-card {
@@ -96,12 +96,54 @@
         button:hover {
             background-color: #68b2a7;
         }
+
+        /* Styles for Add Goal section */
+        #add-goal {
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #add-goal form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #add-goal label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #add-goal input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #add-goal button {
+            padding: 10px;
+            background-color: #76c7c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #add-goal button:hover {
+            background-color: #68b2a7;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Track Your Financial Goals</h1>
 
+        <!-- Active Goals Section (Left-Right alignment) -->
         <div class="goal-list" th:each="goal : ${goals}">
             <div class="goal-card">
                 <div class="goal-title" th:text="${goal.name}"></div>
@@ -128,16 +170,22 @@
             </div>
         </div>
 
-        <!-- Add New Goal Form -->
-        <div>
+        <!-- Section to Add New Goal -->
+        <section id="add-goal">
             <h2>Add New Goal</h2>
-            <form action="/goals/add" method="post">
-                <input type="text" name="name" placeholder="Goal Name" required />
-                <input type="number" name="targetAmount" placeholder="Target Amount" step="0.01" required />
-                <input type="date" name="dueDate" required />
+            <form action="#" th:action="@{/goals/add}" method="post">
+                <label for="goalName">Goal Name:</label>
+                <input type="text" id="goalName" name="name" required>
+
+                <label for="targetAmount">Target Amount:</label>
+                <input type="number" id="targetAmount" name="targetAmount" required>
+
+                <label for="dueDate">Completion Date:</label>
+                <input type="date" id="dueDate" name="dueDate" required>
+
                 <button type="submit">Save Goal</button>
             </form>
-        </div>
+        </section>
     </div>
 </body>
 </html>

@@ -3,6 +3,8 @@ package com.sakhee.finman.expenso.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "financial_goal")
@@ -23,10 +25,21 @@ public class FinancialGoal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    
+    // New field to track milestone
+    private List<Integer> milestones = Arrays.asList(25, 50, 75, 100);
 
 
     // Getters and Setters
     
+	public List<Integer> getMilestones() {
+		return milestones;
+	}
+
+	public void setMilestones(List<Integer> milestones) {
+		this.milestones = milestones;
+	}
+
 	public Long getId() {
 		return id;
 	}

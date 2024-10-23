@@ -22,11 +22,36 @@ public class FinancialGoalDTO {
 	}
 
 	// Add a getter for progress percentage
-    public int getProgressPercentage() {
-        if (targetAmount != null && currentAmount != null && targetAmount.compareTo(BigDecimal.ZERO) > 0) {
-            return currentAmount.multiply(BigDecimal.valueOf(100)).divide(targetAmount, 0, RoundingMode.DOWN).intValue();
+    // Method to calculate the progress percentage
+    public double getProgressPercentage() {
+        if (currentAmount == null || targetAmount == null || targetAmount.compareTo(BigDecimal.ZERO) == 0) {
+            return 0.0;
         }
-        return 0;
+        
+        return currentAmount.divide(targetAmount, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).doubleValue();
+    }
+    
+
+    // Calculate milestone progress
+    // Add the milestoneProgress method
+    public String milestoneProgress() {
+        if (currentAmount == null || targetAmount == null || targetAmount.compareTo(BigDecimal.ZERO) == 0) {
+            return "No progress yet";
+        }
+        
+        BigDecimal progressPercentage = currentAmount.divide(targetAmount, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100));
+
+        if (progressPercentage.compareTo(new BigDecimal(25)) >= 0 && progressPercentage.compareTo(new BigDecimal(50)) < 0) {
+            return "25% Complete";
+        } else if (progressPercentage.compareTo(new BigDecimal(50)) >= 0 && progressPercentage.compareTo(new BigDecimal(75)) < 0) {
+            return "50% Complete";
+        } else if (progressPercentage.compareTo(new BigDecimal(75)) >= 0 && progressPercentage.compareTo(new BigDecimal(100)) < 0) {
+            return "75% Complete";
+        } else if (progressPercentage.compareTo(new BigDecimal(100)) >= 0) {
+            return "Goal Completed!";
+        } else {
+            return progressPercentage.intValue() + "% Complete";
+        }
     }
     
    // Getters and Setters
