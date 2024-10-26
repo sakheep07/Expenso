@@ -3,23 +3,55 @@
 <head>
     <title>Budget Management</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+            font-family: 'Roboto', sans-serif;
+            background-color: #eef2f3;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
+            max-width: 900px;
+            margin: 20px auto;
             padding: 20px;
+            background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         h1, h2 {
-            color: #2c3e50;
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
         }
 
         table {
@@ -30,6 +62,7 @@
 
         th, td {
             padding: 10px;
+            text-align: left;
             border: 1px solid #ddd;
         }
 
@@ -38,13 +71,15 @@
             color: white;
         }
 
-        form {
-            margin-bottom: 20px;
+        .chart-container {
+            margin-top: 40px;
         }
 
-        .chart-container {
-            width: 100%;
-            margin-top: 30px;
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -62,7 +97,7 @@
         <label for="spentAmount">Spent Amount:</label>
         <input type="number" th:field="*{spentAmount}" required/>
 
-        <button type="submit">Save Budget</button>
+        <button type="submit"><i class="fas fa-plus-circle"></i> Save Budget</button>
     </form>
 
     <h2>Budgets</h2>
