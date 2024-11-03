@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income and Expense Summary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,16 +28,12 @@
         .summary p {
             font-size: 1.2em;
         }
-        .message {
-            color: green;
+        .message, .error {
             text-align: center;
             font-weight: bold;
         }
-        .error {
-            color: red;
-            text-align: center;
-            font-weight: bold;
-        }
+        .message { color: green; }
+        .error { color: red; }
         form {
             margin-bottom: 20px;
             display: flex;
@@ -66,23 +63,34 @@
         button:hover {
             background-color: #0056b3;
         }
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .chart-container {
+            width: 48%; /* Adjust width for side by side */
+            max-width: 600px; /* Maintain max width */
+            margin: 0 auto; /* Center the charts */
+        }
     </style>
 </head>
 <body>
     <h1>Income and Expense Summary <i class="fas fa-chart-pie"></i></h1>
-    
+
     <form th:action="@{/reports/income-expense-summary}" method="get">
         <label>Start Date: <input type="date" name="startDate" required/></label>
         <label>End Date: <input type="date" name="endDate" required/></label>
         <button type="submit">Generate Report <i class="fas fa-sync-alt"></i></button>
     </form>
-    
+
     <div class="summary" th:if="${summary != null}">
         <p>Total Income: <span th:text="${summary['totalIncome'] != null ? summary['totalIncome'] : 0}">0</span></p>
         <p>Total Expenses: <span th:text="${summary['totalExpenses'] != null ? summary['totalExpenses'] : 0}">0</span></p>
         <p>Net Income: <span th:text="${(summary['totalIncome'] != null ? summary['totalIncome'] : 0) - (summary['totalExpenses'] != null ? summary['totalExpenses'] : 0)}">0</span></p>
     </div>
-    
+
     <div th:if="${message}">
         <p th:text="${message}" class="message"></p>
     </div>
@@ -91,9 +99,91 @@
         <p th:text="${error}" class="error"></p>
     </div>
 
-    <!-- Placeholder for future chart if needed -->
-    <div class="chart-container">
-        <p>Chart feature is currently removed. You can implement it later as needed.</p>
+    <!-- Charts Container -->
+    <div class="charts-container">
+        <!-- Expense Category Breakdown Chart -->
+        <div class="chart-container" th:if="${categoryBreakdown != null}">
+            <h2>Expenses by Category</h2>
+            <canvas id="categoryBreakdownChart"></canvas>
+        </div>
+
+        <!-- Income Category Breakdown Chart -->
+        <div class="chart-container" th:if="${incomeCategoryBreakdown != null}">
+            <h2>Income by Source</h2>
+            <canvas id="incomeCategoryChart"></canvas>
+        </div>
     </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Expense Category Breakdown Chart
+        const categoryBreakdownData = /*[[${categoryBreakdown}]]*/ {};
+        const categoryLabels = Object.keys(categoryBreakdownData);
+        const categoryValues = Object.values(categoryBreakdownData);
+
+        if (categoryLabels.length > 0) {
+            const ctx = document.getElementById('categoryBreakdownChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: categoryLabels,
+                    datasets: [{
+                        data: categoryValues,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Expenses by Category'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Income Category Breakdown Chart
+        const incomeCategoryData = /*[[${incomeCategoryBreakdown}]]*/ {};
+        const incomeLabels = Object.keys(incomeCategoryData);
+        const incomeValues = Object.values(incomeCategoryData);
+
+        if (incomeLabels.length > 0) {
+            const ctxIncome = document.getElementById('incomeCategoryChart').getContext('2d');
+            new Chart(ctxIncome, {
+                type: 'pie',
+                data: {
+                    labels: incomeLabels,
+                    datasets: [{
+                        data: incomeValues,
+                        backgroundColor: [
+                            '#66BB6A', '#FF7043', '#42A5F5', '#AB47BC', '#26C6DA', '#FFCA28'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Income by Source'
+                        }
+                    }
+                }
+            });
+        }
+        /*]]>*/
+    </script>
 </body>
 </html>

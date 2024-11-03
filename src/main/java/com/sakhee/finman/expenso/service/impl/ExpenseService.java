@@ -3,6 +3,8 @@ package com.sakhee.finman.expenso.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -67,6 +69,17 @@ public class ExpenseService {
                 .stream()
                 .map(Expense::getAmount) // Ensure this returns BigDecimal
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Correctly using BigDecimal for reduction
+    }
+    
+ // This method queries the database to sum expenses by category for the user within the date range.
+    public Map<String, BigDecimal> calculateExpensesByCategory(User user, LocalDate startDate, LocalDate endDate) {
+        List<Expense> expenses = expenseRepository.findByUserAndDateBetween(user, startDate, endDate);
+        
+        return expenses.stream()
+            .collect(Collectors.groupingBy(
+                Expense::getCategory,
+                Collectors.reducing(BigDecimal.ZERO, Expense::getAmount, BigDecimal::add)
+            ));
     }
 }
 

@@ -2,6 +2,7 @@ package com.sakhee.finman.expenso.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,6 @@ import com.sakhee.finman.expenso.entity.User;
 import com.sakhee.finman.expenso.repository.UserRepository;
 import com.sakhee.finman.expenso.service.impl.ReportService;
 
-import java.util.HashMap;
-
 @Controller
 @RequestMapping("/reports")
 public class ReportController {
@@ -34,7 +33,7 @@ public class ReportController {
     @GetMapping
     public String reportsLandingPage(Model model) {
         model.addAttribute("message", "Please enter a date range to view the income and expense summary.");
-        return "reports"; // Ensure you have a reports.html template for this
+        return "reports";
     }
 
     @GetMapping("/income-expense-summary")
@@ -42,30 +41,43 @@ public class ReportController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             Model model) {
-        
-        Map<String, BigDecimal> summary = new HashMap<>();
 
-        // Validate that startDate and endDate are provided
+        Map<String, BigDecimal> summary = new HashMap<>();
+        Map<String, BigDecimal> categoryBreakdown = new HashMap<>();
+        Map<String, BigDecimal> incomeCategoryBreakdown = new HashMap<>(); // New variable for income breakdown
+
         if (startDate != null && endDate != null) {
             if (!startDate.isBefore(endDate)) {
                 model.addAttribute("error", "Start date must be before end date.");
             } else {
-                // Get the current logged-in user
-                String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-                User user = userRepository.findByEmail(username);
+                User user = getCurrentUser();
                 
                 // Fetch income and expense summary based on the provided date range
                 summary = reportService.getIncomeExpenseSummary(user, startDate, endDate);
+                
+                // Fetch category breakdown for expenses
+                categoryBreakdown = reportService.getCategoryBreakdown(user, startDate, endDate);
+                
+                // Fetch category breakdown for income (make sure this method exists in your service)
+                incomeCategoryBreakdown = reportService.getIncomeBySource(user, startDate, endDate);
+                
                 model.addAttribute("summary", summary);
+                model.addAttribute("categoryBreakdown", categoryBreakdown);
+                model.addAttribute("incomeCategoryBreakdown", incomeCategoryBreakdown); // Add to model
                 model.addAttribute("message", "Income and expense summary retrieved successfully.");
             }
         } else {
             model.addAttribute("message", "Please enter a date range to view the income and expense summary.");
         }
 
-        // Add the summary map to the model
-        model.addAttribute("summary", summary);
-        
-        return "reports"; // The Thymeleaf template to display the results
+        return "reports";
+    }
+
+
+    private User getCurrentUser() {
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findByEmail(username);
     }
 }
+
+

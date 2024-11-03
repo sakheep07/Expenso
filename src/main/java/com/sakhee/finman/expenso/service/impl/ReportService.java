@@ -29,5 +29,14 @@ public class ReportService {
         
         return summary;
     }
-}
+    
+    public Map<String, BigDecimal> getCategoryBreakdown(User user, LocalDate startDate, LocalDate endDate) {
+        return expenseService.calculateExpensesByCategory(user, startDate, endDate);
+    }
+    
 
+    public Map<String, BigDecimal> getIncomeBySource(User user, LocalDate startDate, LocalDate endDate) {
+        return incomeService.categorizeIncomeBySource(user, startDate, endDate);
+    }
+    
+}

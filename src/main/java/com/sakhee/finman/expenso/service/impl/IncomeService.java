@@ -2,7 +2,9 @@ package com.sakhee.finman.expenso.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,6 +84,18 @@ public class IncomeService {
                 .stream()
                 .map(Income::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    // Method to categorize income by source
+    public Map<String, BigDecimal> categorizeIncomeBySource(User user, LocalDate startDate, LocalDate endDate) {
+        List<Income> incomes = incomeRepository.findByUserAndDateBetween(user, startDate, endDate);
+        Map<String, BigDecimal> incomeBySource = new HashMap<>();
+
+        for (Income income : incomes) {
+            incomeBySource.merge(income.getSource(), income.getAmount(), BigDecimal::add);
+        }
+
+        return incomeBySource;
     }
 
 }
