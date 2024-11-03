@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income and Expense Summary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .summary {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .summary p {
+            font-size: 1.2em;
+        }
+        .message {
+            color: green;
+            text-align: center;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+        }
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        label {
+            display: flex;
+            align-items: center;
+            font-size: 1em;
+        }
+        input[type="date"] {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Income and Expense Summary <i class="fas fa-chart-pie"></i></h1>
+    
+    <form th:action="@{/reports/income-expense-summary}" method="get">
+        <label>Start Date: <input type="date" name="startDate" required/></label>
+        <label>End Date: <input type="date" name="endDate" required/></label>
+        <button type="submit">Generate Report <i class="fas fa-sync-alt"></i></button>
+    </form>
+    
+    <div class="summary" th:if="${summary != null}">
+        <p>Total Income: <span th:text="${summary['totalIncome'] != null ? summary['totalIncome'] : 0}">0</span></p>
+        <p>Total Expenses: <span th:text="${summary['totalExpenses'] != null ? summary['totalExpenses'] : 0}">0</span></p>
+        <p>Net Income: <span th:text="${(summary['totalIncome'] != null ? summary['totalIncome'] : 0) - (summary['totalExpenses'] != null ? summary['totalExpenses'] : 0)}">0</span></p>
+    </div>
+    
+    <div th:if="${message}">
+        <p th:text="${message}" class="message"></p>
+    </div>
+    
+    <div th:if="${error}">
+        <p th:text="${error}" class="error"></p>
+    </div>
+
+    <!-- Placeholder for future chart if needed -->
+    <div class="chart-container">
+        <p>Chart feature is currently removed. You can implement it later as needed.</p>
+    </div>
+</body>
+</html>

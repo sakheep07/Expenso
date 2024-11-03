@@ -1,5 +1,10 @@
 package com.sakhee.finman.expenso.service.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -9,28 +14,22 @@ import com.sakhee.finman.expenso.entity.Income;
 import com.sakhee.finman.expenso.entity.User;
 import com.sakhee.finman.expenso.repository.IncomeRepository;
 import com.sakhee.finman.expenso.repository.UserRepository;
-import com.sakhee.finman.expenso.service.IncomeService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class IncomeServiceImpl implements IncomeService {
+public class IncomeService {
 
     private final IncomeRepository incomeRepository;
     private final UserRepository userRepository;
 
-    public IncomeServiceImpl(IncomeRepository incomeRepository, UserRepository userRepository) {
+    public IncomeService(IncomeRepository incomeRepository, UserRepository userRepository) {
         this.incomeRepository = incomeRepository;
         this.userRepository = userRepository;
     }
 
-	@Override
 	public List<Income> getIncomeByUser(User user) {
 		return incomeRepository.findByUser(user);
 	}
     
-    @Override
     public IncomeDTO saveIncome(IncomeDTO incomeDTO) {
         // Get current logged-in user
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
@@ -51,7 +50,6 @@ public class IncomeServiceImpl implements IncomeService {
         return incomeDTO;
     }
 
-    @Override
     public List<IncomeDTO> getAllIncomesByUser(User user) {
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         user = userRepository.findByEmail(username);
@@ -59,13 +57,11 @@ public class IncomeServiceImpl implements IncomeService {
         return incomes.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    @Override
     public IncomeDTO getIncomeById(Long id) {
         Income income = incomeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid income ID"));
         return convertToDTO(income);
     }
 
-    @Override
     public void deleteIncome(Long id) {
         incomeRepository.deleteById(id);
     }
@@ -80,6 +76,13 @@ public class IncomeServiceImpl implements IncomeService {
         return incomeDTO;
     }
 
+ // IncomeService
+    public BigDecimal calculateTotalIncome(User user, LocalDate startDate, LocalDate endDate) {
+        return incomeRepository.findByUserAndDateBetween(user, startDate, endDate)
+                .stream()
+                .map(Income::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
 }
 

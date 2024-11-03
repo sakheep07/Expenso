@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.sakhee.finman.expenso.dto.IncomeDTO;
 import com.sakhee.finman.expenso.entity.User;
 import com.sakhee.finman.expenso.repository.UserRepository;
-import com.sakhee.finman.expenso.service.IncomeService;
+import com.sakhee.finman.expenso.service.impl.IncomeService;
 
 import java.util.List;
 

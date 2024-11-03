@@ -1,6 +1,8 @@
 package com.sakhee.finman.expenso.entity;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -15,7 +17,7 @@ public class Income {
     private String source; // e.g., Salary, Freelance
 
     @Column(nullable = false)
-    private double amount;
+    private BigDecimal amount;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -43,11 +45,11 @@ public class Income {
         this.source = source;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

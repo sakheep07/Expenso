@@ -1,12 +1,13 @@
 package com.sakhee.finman.expenso.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class IncomeDTO {
 
     private Long id;
     private String source;
-    private double amount;
+    private BigDecimal amount;
     private LocalDate date;
     private String note;
 
@@ -27,11 +28,11 @@ public class IncomeDTO {
         this.source = source;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
