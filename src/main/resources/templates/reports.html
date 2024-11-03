@@ -70,25 +70,48 @@
             margin: 20px 0;
         }
         .chart-container {
-            width: 48%; /* Adjust width for side by side */
-            max-width: 600px; /* Maintain max width */
-            margin: 0 auto; /* Center the charts */
+            width: 48%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .export-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
         }
     </style>
 </head>
 <body>
     <h1>Income and Expense Summary <i class="fas fa-chart-pie"></i></h1>
 
-    <form th:action="@{/reports/income-expense-summary}" method="get">
-        <label>Start Date: <input type="date" name="startDate" required/></label>
-        <label>End Date: <input type="date" name="endDate" required/></label>
+    <form id="reportForm" th:action="@{/reports/income-expense-summary}" method="get">
+        <label>Start Date: <input type="date" id="startDate" name="startDate" th:value="${startDate}" required/></label>
+        <label>End Date: <input type="date" id="endDate" name="endDate" th:value="${endDate}" required/></label>
         <button type="submit">Generate Report <i class="fas fa-sync-alt"></i></button>
     </form>
 
     <div class="summary" th:if="${summary != null}">
         <p>Total Income: <span th:text="${summary['totalIncome'] != null ? summary['totalIncome'] : 0}">0</span></p>
         <p>Total Expenses: <span th:text="${summary['totalExpenses'] != null ? summary['totalExpenses'] : 0}">0</span></p>
-        <p>Net Income: <span th:text="${(summary['totalIncome'] != null ? summary['totalIncome'] : 0) - (summary['totalExpenses'] != null ? summary['totalExpenses'] : 0)}">0</span></p>
     </div>
 
     <div th:if="${message}">
@@ -99,23 +122,90 @@
         <p th:text="${error}" class="error"></p>
     </div>
 
+    <!-- Export Buttons -->
+    <div class="export-buttons" th:if="${summary != null}">
+        <button id="exportPdfButton" type="button">Download PDF <i class="fas fa-file-pdf"></i></button>
+        <button id="exportExcelButton" type="button">Download Excel <i class="fas fa-file-excel"></i></button>
+    </div>
+
+    <!-- Income Details Table -->
+    <h2>Income Details</h2>
+    <table th:if="${incomeDetails}">
+        <thead>
+            <tr>
+                <th>Income Source</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="income : ${incomeDetails}">
+                <td th:text="${income.source}">Source</td>
+                <td th:text="${income.amount}">0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Expense Details Table -->
+    <h2>Expense Details</h2>
+    <table th:if="${expenseDetails}">
+        <thead>
+            <tr>
+                <th>Expense Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="expense : ${expenseDetails}">
+                <td th:text="${expense.category}">Category</td>
+                <td th:text="${expense.amount}">0</td>
+            </tr>
+        </tbody>
+    </table>
+
     <!-- Charts Container -->
     <div class="charts-container">
         <!-- Expense Category Breakdown Chart -->
         <div class="chart-container" th:if="${categoryBreakdown != null}">
-            <h2>Expenses by Category</h2>
+            <h2>Expense Categories</h2>
             <canvas id="categoryBreakdownChart"></canvas>
         </div>
 
         <!-- Income Category Breakdown Chart -->
         <div class="chart-container" th:if="${incomeCategoryBreakdown != null}">
-            <h2>Income by Source</h2>
+            <h2>Income Sources</h2>
             <canvas id="incomeCategoryChart"></canvas>
         </div>
     </div>
 
     <script th:inline="javascript">
         /*<![CDATA[*/
+        // JavaScript for dynamically updating export URLs with startDate and endDate
+        document.getElementById("exportPdfButton").addEventListener("click", function () {
+            const startDate = document.getElementById("startDate").value;
+            const endDate = document.getElementById("endDate").value;
+
+            if (!startDate || !endDate) {
+                alert("Please select both start and end dates.");
+                return;
+            }
+
+            const exportUrl = `/reports/export/pdf?startDate=${startDate}&endDate=${endDate}`;
+            window.location.href = exportUrl;
+        });
+
+        document.getElementById("exportExcelButton").addEventListener("click", function () {
+            const startDate = document.getElementById("startDate").value;
+            const endDate = document.getElementById("endDate").value;
+
+            if (!startDate || !endDate) {
+                alert("Please select both start and end dates.");
+                return;
+            }
+
+            const exportUrl = `/reports/export/excel?startDate=${startDate}&endDate=${endDate}`;
+            window.location.href = exportUrl;
+        });
+
         // Expense Category Breakdown Chart
         const categoryBreakdownData = /*[[${categoryBreakdown}]]*/ {};
         const categoryLabels = Object.keys(categoryBreakdownData);
@@ -164,7 +254,7 @@
                     datasets: [{
                         data: incomeValues,
                         backgroundColor: [
-                            '#66BB6A', '#FF7043', '#42A5F5', '#AB47BC', '#26C6DA', '#FFCA28'
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
                         ],
                         borderWidth: 1
                     }]

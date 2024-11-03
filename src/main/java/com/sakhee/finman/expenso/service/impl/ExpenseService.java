@@ -81,5 +81,10 @@ public class ExpenseService {
                 Collectors.reducing(BigDecimal.ZERO, Expense::getAmount, BigDecimal::add)
             ));
     }
+    
+    public List<Expense> getExpenseDetails(User user, LocalDate startDate, LocalDate endDate) {
+        return expenseRepository.findByUserAndDateBetween(user, startDate, endDate);
+    }
+
 }
 

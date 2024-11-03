@@ -97,6 +97,10 @@ public class IncomeService {
 
         return incomeBySource;
     }
+    
+    public List<Income> getIncomeDetails(User user, LocalDate startDate, LocalDate endDate) {
+        return incomeRepository.findByUserAndDateBetween(user, startDate, endDate);
+    }
 
 }
 
