@@ -32,15 +32,21 @@ public class FinancialGoalService {
         financialGoalRepository.save(goal);
     }
 
-    // Update goal progress
-    public void updateGoalAmount(Long id, BigDecimal currentAmount) {
+ // Update goal progress
+    public void updateGoalAmount(Long id, BigDecimal additionalAmount) {
         Optional<FinancialGoal> optionalGoal = financialGoalRepository.findById(id);
         if (optionalGoal.isPresent()) {
             FinancialGoal goal = optionalGoal.get();
-            goal.setCurrentAmount(currentAmount);
+            
+            // Initialize currentAmount to BigDecimal.ZERO if it's null
+            BigDecimal currentAmount = goal.getCurrentAmount() != null ? goal.getCurrentAmount() : BigDecimal.ZERO;
+            
+            // Add the additional amount to the current amount
+            BigDecimal updatedAmount = currentAmount.add(additionalAmount);
+            goal.setCurrentAmount(updatedAmount);
 
             // Check if goal is completed
-            if (currentAmount.compareTo(goal.getTargetAmount()) >= 0) {
+            if (updatedAmount.compareTo(goal.getTargetAmount()) >= 0) {
                 goal.setCompleted(true);
                 goal.setCompletionDate(LocalDate.now());
             }
@@ -48,6 +54,7 @@ public class FinancialGoalService {
             financialGoalRepository.save(goal);
         }
     }
+
 
     // Archive completed goals (goal history)
     public List<FinancialGoalDTO> getGoalHistory(User user) {

@@ -26,14 +26,14 @@
             color: #444;
         }
 
-        .goal-list {
+        .goal-list, .goal-history {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: space-around;
         }
 
-        .goal-card {
+        .goal-card, .history-card {
             background: #f7f7f7;
             padding: 20px;
             border-radius: 10px;
@@ -47,34 +47,8 @@
             margin-bottom: 10px;
         }
 
-        .radial-progress {
-            width: 150px;
-            height: 150px;
-            background: conic-gradient(
-                #76c7c0 0% calc(var(--progress) * 1%), 
-                #ddd calc(var(--progress) * 1%), 
-                #ddd 100%
-            );
-            border-radius: 50%;
-            margin: auto;
-            position: relative;
-        }
-
-        .radial-progress .progress-value {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.2em;
-            color: #333;
-        }
-
-        .goal-details {
+        .goal-details, .history-details {
             margin-top: 15px;
-        }
-
-        .goal-details p {
-            margin: 5px 0;
         }
 
         .action-buttons {
@@ -97,7 +71,6 @@
             background-color: #68b2a7;
         }
 
-        /* Styles for Add Goal section */
         #add-goal {
             margin: 40px auto;
             padding: 20px;
@@ -137,30 +110,41 @@
         #add-goal button:hover {
             background-color: #68b2a7;
         }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #76c7c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .button:hover {
+            background-color: #68b2a7;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Track Your Financial Goals</h1>
 
-        <!-- Active Goals Section (Left-Right alignment) -->
+
+
+        <!-- Active Goals Section -->
         <div class="goal-list" th:each="goal : ${goals}">
             <div class="goal-card">
                 <div class="goal-title" th:text="${goal.name}"></div>
-
-                <!-- Radial Progress Bar -->
-                <div class="radial-progress" style="--progress: [[${goal.currentAmount / goal.targetAmount}]];">
-                    <div class="progress-value" th:text="${goal.progressPercentage} + '%'"></div>
-                </div>
-
                 <div class="goal-details">
-                    <p>Target: $<span th:text="${goal.targetAmount}"></span></p>
-                    <p>Saved: $<span th:text="${goal.currentAmount}"></span></p>
+                    <p>Target: <span th:text="${goal.targetAmount}"></span></p>
+                    <p>Saved: <span th:text="${goal.currentAmount}"></span></p>
                     <p th:if="${goal.completed}">Completed on: <span th:text="${goal.completionDate}"></span></p>
                     <p th:if="${!goal.completed}">Due Date: <span th:text="${goal.dueDate}"></span></p>
                 </div>
-
-                <!-- Action Buttons -->
                 <div class="action-buttons">
                     <form th:action="@{'/goals/update/' + ${goal.id}}" method="post">
                         <input type="number" name="currentAmount" placeholder="New Amount" step="0.01" />
@@ -176,16 +160,30 @@
             <form action="#" th:action="@{/goals/add}" method="post">
                 <label for="goalName">Goal Name:</label>
                 <input type="text" id="goalName" name="name" required>
-
                 <label for="targetAmount">Target Amount:</label>
                 <input type="number" id="targetAmount" name="targetAmount" required>
-
                 <label for="dueDate">Completion Date:</label>
                 <input type="date" id="dueDate" name="dueDate" required>
-
                 <button type="submit">Save Goal</button>
             </form>
         </section>
+
+        <!-- Goal History Section -->
+        <h2>Goal History</h2>
+		<!-- Link to Goal History -->
+		<div style="text-align:center; margin-bottom: 20px;">
+		    <a href="/goals/history" class="button">View Goal History</a>
+		</div>
+        <div class="goal-history" th:each="history : ${goalHistory}">
+            <div class="history-card">
+                <div class="goal-title" th:text="${history.name}"></div>
+                <div class="history-details">
+                    <p>Target: <span th:text="${history.targetAmount}"></span></p>
+                    <p>Saved: <span th:text="${history.currentAmount}"></span></p>
+                    <p>Completion Date: <span th:text="${history.completionDate}"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

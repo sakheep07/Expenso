@@ -59,6 +59,6 @@ public class FinancialGoalController {
         User user = userRepository.findByEmail(username);
         List<FinancialGoalDTO> goalHistory = financialGoalService.getGoalHistory(user);
         model.addAttribute("goalHistory", goalHistory);
-        return "goal-history";
+        return "goals";
     }
 }
