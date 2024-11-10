@@ -137,30 +137,39 @@
 <section id="features" class="container">
     <div class="features-section">
         <div class="feature-card">
-            <h3>Expense Tracking</h3>
-			<a th:href="@{/expenses}" class="btn">Manage Expenses</a>
+            <h3>Track Expenses</h3>
+            <a th:href="@{/expenses}" class="btn">View Expenses</a>
         </div>
         <div class="feature-card">
-            <h3>Income Management</h3>
-			<a th:href="@{/income}" class="btn">Manage Income</a>
+            <h3>Track Income</h3>
+            <a th:href="@{/income}" class="btn">View Income</a>
         </div>
         <div class="feature-card">
-            <h3>Budgeting</h3>
-			<a th:href="@{/budget}" class="btn">View Budget</a>
+            <h3>Set Budget</h3>
+            <a th:href="@{/budget}" class="btn">View Budget</a>
         </div>
         <div class="feature-card">
             <h3>Financial Goals</h3>
-			<a th:href="@{/goals}" class="btn">View Financial Goals</a>
+            <a th:href="@{/goals}" class="btn">View Goals</a>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <div class="feature-card">
+            <h3>Generate Reports</h3>
+            <a th:href="@{/reports}" class="btn">Export Reports</a>
         </div>
         <div class="feature-card">
-            <h3>Reports</h3>
-			<a th:href="@{/reports}" class="btn">Export Reports</a>
+            <h3>Currency Exchange</h3>
+            <a th:href="@{/currency-converter}" class="btn">Currency Converter</a>
         </div>
         <div class="feature-card">
-            <h3>Quick Actions</h3>
-			<a th:href="@{/currency-converter}" class="btn">Currency Converter</a>
-			<a th:href="@{/future-investment}" class="btn">Future Investment</a>
-			<a th:href="@{/loan-calculator}" class="btn">Loan Calculator</a>
+            <h3>Investment Planner</h3>
+            <a th:href="@{/future-investment}" class="btn">Future Investment</a>
+        </div>
+        <div class="feature-card">
+            <h3>EMI Calculator</h3>
+            <a th:href="@{/loan-calculator}" class="btn">Loan Calculator</a>
         </div>
     </div>
 </section>

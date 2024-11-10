@@ -10,97 +10,128 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <!-- Custom CSS -->
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
-            margin: 0;
-            padding: 0;
-        }
+	<!-- Custom CSS -->
+	<style>
+	    /* Background and font styles */
+	    body {
+	        font-family: 'Arial', sans-serif;
+	        background: linear-gradient(to bottom right, #a4d4ae, #f3b6c4);
+	        margin: 0;
+	        padding: 0;
+	        display: flex;
+	        flex-direction: column;
+	        min-height: 100vh;
+	        color: #3d3d3d;
+	    }
 
-        .navbar {
-            background: #343a40;
-        }
+	    /* Header (topbar) styling */
+	    .topbar {
+	        width: 100%;
+	        background-color: #ff6f61;
+	        padding: 12px 20px;
+	        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	        flex-wrap: wrap;
+	    }
 
-        h1 {
-            margin-top: 100px;
-            color: #333;
-            animation: fadeIn 2s ease-in-out;
-        }
+	    .topbar a {
+	        color: #fdebd3;
+	        font-size: 16px;
+	        margin: 0 12px;
+	        text-decoration: none;
+	        transition: all 0.3s ease;
+	    }
 
-        .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #343a40;
-            padding-top: 20px;
-            transition: all 0.3s ease-in-out;
-        }
+	    .topbar a:hover {
+	        color: #ff8c85;
+	        transform: scale(1.05);
+	    }
 
-        .sidebar a {
-            padding: 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.2s;
-        }
+	    .social-icons a {
+	        font-size: 20px;
+	        margin-left: 8px;
+	        color: #fdebd3;
+	        transition: color 0.3s ease;
+	    }
 
-        .sidebar a:hover {
-            background-color: #575c63;
-            padding-left: 20px;
-        }
+	    .social-icons a:hover {
+	        color: #ff8c85;
+	    }
 
-        .sidebar .social-icons {
-            margin-top: 30px;
-            text-align: center;
-        }
+	    /* Main container adjustments */
+	    .container {
+	        flex: 1;
+	        padding: 60px 20px;
+	        text-align: center;
+	        color: #2b3e50;
+	        background-color: #ffedd5;
+	        border-radius: 12px;
+	        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+	    }
 
-        .sidebar .social-icons a {
-            color: #ffffff;
-            font-size: 24px;
-            margin: 10px;
-        }
+	    h1 {
+	        font-weight: bold;
+	        font-size: 2.6em;
+	        color: #2a7d8c;
+	        animation: fadeIn 2s ease-in-out;
+	    }
 
-        .container {
-            margin-left: 260px;
-        }
+	    p {
+	        color: #5c3d4e;
+	        font-size: 1.2em;
+	        margin-top: -10px;
+	        animation: fadeIn 2.5s ease-in-out;
+	    }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: #343a40;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
+	    /* Button styling */
+	    .btn-primary {
+	        background-color: #e67284;
+	        border: none;
+	        color: #fdebd3;
+	        font-size: 1em;
+	        padding: 10px 20px;
+	        margin-top: 20px;
+	        border-radius: 6px;
+	        transition: background 0.3s;
+	    }
 
-        /* Keyframe for subtle animation */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+	    .btn-primary:hover {
+	        background-color: #c35466;
+	    }
+
+	    /* Footer styling */
+	    .footer {
+	        background: #ff6f61;
+	        color: #fdebd3;
+	        text-align: center;
+	        padding: 15px;
+	        font-size: 0.9em;
+	        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+	        border-top-left-radius: 8px;
+	        border-top-right-radius: 8px;
+	    }
+
+	    /* Keyframes */
+	    @keyframes fadeIn {
+	        0% { opacity: 0; transform: translateY(20px); }
+	        100% { opacity: 1; transform: translateY(0); }
+	    }
+	</style>
+
+
 </head>
 
 <body>
-    <!-- Sidebar Menu -->
-    <div class="sidebar">
-        <a href="#" th:href="@{/register}"><i class="fas fa-user-plus"></i> Register</a>
-        <a href="#" th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Login</a>
-        <a href="#" th:href="@{/about-expenso}"><i class="fas fa-info-circle"></i> About Expenso</a>
-        <a href="#" th:href="@{/feedback}"><i class="fas fa-comment-dots"></i> Feedback</a>
-
+    <!-- Topbar -->
+    <div class="topbar">
+        <div>
+            <a href="#" th:href="@{/register}"><i class="fas fa-user-plus"></i> Register</a>
+            <a href="#" th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="#" th:href="@{/about-expenso}"><i class="fas fa-info-circle"></i> About Expenso</a>
+            <a href="#" th:href="@{/feedback}"><i class="fas fa-comment-dots"></i> Feedback</a>
+        </div>
         <div class="social-icons">
             <a href="#"><i class="fab fa-facebook-square"></i></a>
             <a href="#"><i class="fab fa-instagram-square"></i></a>
@@ -111,8 +142,8 @@
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-            <h1 class="text-center">Welcome to Expenso</h1>
-            <p class="text-center">Your smart solution for financial planning and management</p>
+            <h1>Welcome to Expenso</h1>
+            <p>Your smart solution for financial planning and management</p>
         </div>
     </div>
 

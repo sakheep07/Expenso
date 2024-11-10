@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Expenso : Smart Finance Planning & Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to right, #4facfe, #00f2fe);
+            background: linear-gradient(to right, #6a11cb, #2575fc);
             height: 100vh;
             display: flex;
             align-items: center;
@@ -15,25 +15,52 @@
             font-family: 'Arial', sans-serif;
         }
         .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.5s ease-in-out;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            animation: fadeIn 0.7s ease-in-out;
+            color: #333;
         }
         .card-header {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px 10px 0 0;
+            background-color: transparent;
+            border: none;
+            padding-bottom: 0;
+            text-align: center;
+            color: #fff;
+        }
+        .card-body label {
+            color: #e6e6e6;
+            font-weight: 500;
+        }
+        .form-control {
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
         }
         .btn-primary {
-            background-color: #007bff;
+            background-color: #ff8c42;
+            border: none;
             transition: background-color 0.3s;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #e67e22;
         }
         .footer {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             width: 100%;
+            text-align: center;
+        }
+        .emoji {
+            font-size: 1.5rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
         }
         @keyframes fadeIn {
             from {
@@ -45,18 +72,14 @@
                 transform: translateY(0);
             }
         }
-        .emoji {
-            font-size: 1.5rem;
-            display: inline-block;
-            margin-right: 0.5rem;
-        }
     </style>
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">Expenso : Smart Finance Planning & Management</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
@@ -72,24 +95,24 @@
                 <div class="alert alert-success">You have been logged out.</div>
             </div>
             <div class="card">
-                <div class="card-header text-center">
-                    <h3><span class="emoji">👋</span> Login Form</h3>
+                <div class="card-header">
+                    <h3><span class="emoji">👋</span> Login to Expenso</h3>
                 </div>
                 <div class="card-body">
                     <form method="post" th:action="@{/login}" class="form-horizontal" role="form">
                         <div class="mb-3">
-                            <label for="username" class="control-label">Email <span class="emoji">📧</span>*</label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Email" required />
+                            <label for="username" class="control-label">Email <span class="emoji">📧</span></label>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Enter your email" required />
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="control-label">Password <span class="emoji">🔒</span>*</label>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required />
+                            <label for="password" class="control-label">Password <span class="emoji">🔒</span></label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required />
                         </div>
 
                         <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-primary">Login <span class="emoji">🚀</span></button>
-                            <div class="mt-2">Not registered? <a th:href="@{/register}" style="color: #ffdd57;">Register/SignUp Here</a></div>
+                            <button type="submit" class="btn btn-primary w-100">Login <span class="emoji">🚀</span></button>
+                            <div class="mt-2" style="color: #f0f0f0;">Not registered? <a th:href="@{/register}" style="color: mediumturquoise;">Register/Sign Up Here</a></div>
                         </div>
                     </form>
                 </div>
@@ -98,10 +121,10 @@
     </div>
 </div>
 
-<footer class="footer mt-5">
-    <p class="text-center" style="color: #fff;">&copy; 2024 Expenso : Smart Finance Planning & Management</p>
+<footer class="footer">
+    <p>&copy; 2024 Expenso : Smart Finance Planning & Management</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-c7cD0bbRpjxXx85+phE2KBgHGNIJ/gj38t5p79AauMgyZL0owbsz2FIk5bDq7g5J" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

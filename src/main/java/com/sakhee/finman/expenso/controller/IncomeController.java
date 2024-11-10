@@ -49,15 +49,7 @@ public class IncomeController {
         incomeService.saveIncome(incomeDTO);
         return "redirect:/income"; // Redirect to income list after adding
     }
-
-    // Get the form for editing an existing income
-    @GetMapping("/edit/{id}")
-    public String showEditIncomeForm(@PathVariable Long id, Model model) {
-        IncomeDTO incomeDTO = incomeService.getIncomeById(id);
-        model.addAttribute("incomeDTO", incomeDTO);
-        return "income"; // Use the same income page for editing
-    }
-
+    
     // Handle the editing of income
     @PostMapping("/edit/{id}")
     public String editIncome(@PathVariable Long id, @ModelAttribute IncomeDTO incomeDTO) {
@@ -66,10 +58,17 @@ public class IncomeController {
         return "redirect:/income"; // Redirect to income list after editing
     }
 
-    // Handle the deletion of income
+    @GetMapping("/edit/{id}")
+    public String showEditIncomeForm(@PathVariable Long id, Model model) {
+        IncomeDTO incomeDTO = incomeService.getIncomeById(id);
+        model.addAttribute("incomeDTO", incomeDTO);
+        return "income"; // Use the same page for adding/editing
+    }
+
     @GetMapping("/delete/{id}")
     public String deleteIncome(@PathVariable Long id) {
         incomeService.deleteIncome(id);
         return "redirect:/income"; // Redirect to income list after deletion
     }
+
 }

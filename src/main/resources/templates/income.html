@@ -121,32 +121,34 @@
     </div>
 
     <!-- Income List Section -->
-    <div class="list-section">
-        <h2>Income List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Source</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Note</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="income : ${incomes}">
-                    <td th:text="${income.source}"></td>
-                    <td th:text="${income.amount}"></td>
-                    <td th:text="${income.date != null ? #temporals.format(income.date, 'yyyy-MM-dd') : 'N/A'}"></td> <!-- Fixed date formatting -->
-                    <td th:text="${income.note}"></td>
-                    <td class="actions">
-                        <a th:href="@{/income/edit(id=${income.id})}">Edit</a>
-                        <a th:href="@{/income/delete(id=${income.id})}" onclick="return confirm('Are you sure?');">Delete</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+	<div class="list-section">
+	    <h2>Income List</h2>
+	    <table>
+	        <thead>
+	            <tr>
+	                <th>Source</th>
+	                <th>Amount</th>
+	                <th>Date</th>
+	                <th>Note</th>
+	                <th>Actions</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr th:each="income : ${incomes}">
+	                <td th:text="${income.source}"></td>
+	                <td th:text="${income.amount}"></td>
+	                <td th:text="${income.date != null ? #temporals.format(income.date, 'yyyy-MM-dd') : 'N/A'}"></td>
+	                <td th:text="${income.note}"></td>
+	                <td class="actions">
+	                    <!-- Corrected Edit link with path variable -->
+	                    <a th:href="@{/income/edit/{id}(id=${income.id})}">Edit</a>
+	                    <!-- Corrected Delete link with path variable -->
+	                    <a th:href="@{/income/delete/{id}(id=${income.id})}" onclick="return confirm('Are you sure?');">Delete</a>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
 </div>
 
 </body>

@@ -21,7 +21,7 @@ public class ExpenseController {
 
     @Autowired
     private ExpenseService expenseService;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -29,7 +29,6 @@ public class ExpenseController {
     public String getAllExpenses(Model model) {
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         User user = userRepository.findByEmail(username);
-        
         model.addAttribute("expenses", expenseService.getExpensesByUser(user));
         return "expenses";
     }
@@ -37,10 +36,11 @@ public class ExpenseController {
     @GetMapping("/add")
     public String addExpenseForm(Model model) {
         model.addAttribute("expense", new ExpenseDto());
+        model.addAttribute("expenseId", null);  // New expense mode
         return "add-expense";
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public String saveExpense(@ModelAttribute("expense") ExpenseDto expenseDTO) {
         Expense expense = new Expense();
         expense.setCategory(expenseDTO.getCategory());
@@ -54,13 +54,20 @@ public class ExpenseController {
     @GetMapping("/edit/{id}")
     public String editExpenseForm(@PathVariable Long id, Model model) {
         Expense expense = expenseService.getExpenseById(id);
-        model.addAttribute("expense", expense);
-        return "edit-expense";
+        ExpenseDto expenseDto = new ExpenseDto();  
+        expenseDto.setCategory(expense.getCategory());
+        expenseDto.setAmount(expense.getAmount());
+        expenseDto.setDate(expense.getDate().toString());
+        expenseDto.setNote(expense.getNote());
+        model.addAttribute("expense", expenseDto);
+        model.addAttribute("expenseId", id);
+        return "add-expense";  // Same form for adding and editing
     }
 
     @PostMapping("/update/{id}")
     public String updateExpense(@PathVariable Long id, @ModelAttribute("expense") ExpenseDto expenseDTO) {
         Expense expense = new Expense();
+        expense.setId(id);  // Use existing expense ID to update
         expense.setCategory(expenseDTO.getCategory());
         expense.setAmount(expenseDTO.getAmount());
         expense.setDate(LocalDate.parse(expenseDTO.getDate()));
@@ -75,4 +82,3 @@ public class ExpenseController {
         return "redirect:/expenses";
     }
 }
-
