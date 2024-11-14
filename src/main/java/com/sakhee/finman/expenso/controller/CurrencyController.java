@@ -6,8 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.sakhee.finman.expenso.entity.CurrencyConversionHistory;
 import com.sakhee.finman.expenso.service.impl.CurrencyService;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -18,27 +20,32 @@ public class CurrencyController {
 
     @GetMapping("/currency-converter")
     public String showConverterPage(Model model) {
-        Map<String, Double> currencies = currencyService.getExchangeRates("USD"); // Use default base currency
+        Map<String, Double> currencies = currencyService.getExchangeRates("USD");
         model.addAttribute("currencies", currencies);
-        return "currency-converter"; // Thymeleaf template name
+        return "currency-converter";
     }
 
     @PostMapping("/currency-convert")
     public String convertCurrency(Model model, double amount, String fromCurrency, String toCurrency) {
-        // Retrieve the exchange rates again
-        Map<String, Double> currencies = currencyService.getExchangeRates("USD"); // Get rates based on a default base currency
+        double convertedAmount = currencyService.convertCurrency(amount, fromCurrency, toCurrency);
 
-        // Conversion logic: calculate convertedAmount based on the rates
-        double convertedAmount = amount * (currencies.get(toCurrency) / currencies.get(fromCurrency));
-        
         // Add results to the model
-        model.addAttribute("convertedAmount", String.format("%.2f", convertedAmount)); // Format to 2 decimal places
+        model.addAttribute("convertedAmount", String.format("%.2f", convertedAmount));
         model.addAttribute("toCurrency", toCurrency);
-        model.addAttribute("currencies", currencies); // Pass currencies again for the dropdowns
+        model.addAttribute("currencies", currencyService.getExchangeRates("USD"));
 
-        return "currency-converter"; // Return to the same page to display the result
+        return "currency-converter";
+    }
+    
+    // New method to display currency conversion history
+    @GetMapping("/currency-history")
+    public String showConversionHistory(Model model) {
+        List<CurrencyConversionHistory> history = currencyService.getConversionHistory();
+        model.addAttribute("history", history);
+        return "currency-history"; // A new Thymeleaf template to display history
     }
 }
+
 
 
 

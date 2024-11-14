@@ -146,6 +146,7 @@
                                placeholder="Enter email address"
                                th:field="*{email}"
                                type="email"
+							   autocomplete="off"
                                required
                         />
                         <p th:errors="*{email}" class="text-danger"></p>
@@ -159,6 +160,7 @@
                                placeholder="Enter password"
                                th:field="*{password}"
                                type="password"
+							   autocomplete="off"
                                required
                         />
                         <p th:errors="*{password}" class="text-danger"></p>

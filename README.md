@@ -30,14 +30,10 @@ CREATE TABLE expenses (
     category VARCHAR(255) NOT NULL,
     amount DOUBLE NOT NULL,
     date DATE NOT NULL,
-    note VARCHAR(255)
+    note VARCHAR(255),
+    user_id BIGINT NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
-ALTER TABLE expenses
-ADD COLUMN user_id BIGINT NOT NULL,
-ADD CONSTRAINT fk_user
-FOREIGN KEY (user_id) REFERENCES users(id);
-
 
 CREATE TABLE incomes (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -69,4 +65,41 @@ CREATE TABLE financial_goal (
     completion_date DATE,
     user_id BIGINT,
     CONSTRAINT fk_user_goal FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE CurrencyConversionHistory (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    amount DECIMAL(15, 2) NOT NULL,
+    from_currency VARCHAR(3) NOT NULL,
+    to_currency VARCHAR(3) NOT NULL,
+    converted_amount DECIMAL(15, 2) NOT NULL,
+    user_id BIGINT,
+    CONSTRAINT fk_currency FOREIGN KEY (user_id) REFERENCES users(id),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE future_investment_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    monthly_investment DECIMAL(15, 2) NOT NULL,
+    investment_period INT NOT NULL,
+    risk_level VARCHAR(50) NOT NULL,
+    expected_rate DECIMAL(5, 2) NOT NULL,
+    future_value DECIMAL(15, 2) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id BIGINT,
+    CONSTRAINT fk_investment FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+
+CREATE TABLE loan_calculation_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    principal DECIMAL(15, 2) NOT NULL,
+    annual_rate DECIMAL(5, 2) NOT NULL,
+    tenure_in_years INT NOT NULL,
+    emi DECIMAL(15, 2) NOT NULL,
+    total_payment DECIMAL(15, 2) NOT NULL,
+    total_interest DECIMAL(15, 2) NOT NULL,
+    user_id BIGINT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_loan FOREIGN KEY (user_id) REFERENCES users(id)
 );

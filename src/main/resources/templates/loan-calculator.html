@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-			background: linear-gradient(135deg, #76c7c0, #f3ec78);
+            background: linear-gradient(135deg, #76c7c0, #f3ec78);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -46,17 +46,26 @@
             border-radius: 4px;
         }
 
-        button {
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button, .button-group a {
             padding: 10px 20px;
             border: none;
             border-radius: 4px;
             background-color: #007bff;
             color: white;
             cursor: pointer;
+            text-decoration: none;
+            text-align: center;
             transition: background-color 0.3s;
         }
 
-        button:hover {
+        button:hover, .button-group a:hover {
             background-color: #0056b3;
         }
 
@@ -93,12 +102,13 @@
             <p>Total Interest: <span id="totalInterest">-</span></p>
         </div>
 
-        <div class="chart-container">
-            <canvas id="emiChart" width="400" height="200"></canvas>
+        <div class="button-group">
+            <a href="/user-dashboard">Back to Dashboard</a>
+            <a href="/loan-history">View Loan Calculation History</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
 	        let emiChart;
 

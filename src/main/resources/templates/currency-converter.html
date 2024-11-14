@@ -78,6 +78,17 @@
     <div class="result" th:if="${convertedAmount != null}">
         <h2>Converted Amount: <span th:text="${convertedAmount}"></span> <span th:text="${toCurrency}"></span></h2>
     </div>
+
+    <!-- View Conversion History Button -->
+    <div>
+        <a class="add-btn" th:href="@{/currency-history}">View Conversion History</a>
+    </div>
 </div>
+
+<!-- Redirect Button to User Dashboard -->
+<div>
+	<a class="add-btn" th:href="@{/user-dashboard}">Back to Dashboard</a>
+</div>
+
 </body>
 </html>

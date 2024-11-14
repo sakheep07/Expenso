@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Calculation History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 1000px; /* Increased to accommodate a larger table */
+            width: 90%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 0.9em; /* Reduced font size for better fit */
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 0.85em;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group a {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .button-group a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan Calculation History</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Principal</th>
+                    <th>Annual Rate</th>
+                    <th>Tenure (Years)</th>
+                    <th>EMI</th>
+                    <th>Total Payment</th>
+                    <th>Total Interest</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="history : ${history}">
+                    <td th:text="${history.principal}"></td>
+                    <td th:text="${history.annualRate}"></td>
+                    <td th:text="${history.tenureInYears}"></td>
+                    <td th:text="${history.emi}"></td>
+                    <td th:text="${history.totalPayment}"></td>
+                    <td th:text="${history.totalInterest}"></td>
+                    <td th:text="${#temporals.format(history.timestamp, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="button-group">
+            <a th:href="@{/loan-calculator}">Back to Calculator</a>
+            <a th:href="@{/user-dashboard}">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -88,6 +88,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-java8time</artifactId>
+    <version>3.0.4.RELEASE</version>
+</dependency>
+
 		<!-- For PDF generation -->
 <dependency>
     <groupId>com.itextpdf</groupId>

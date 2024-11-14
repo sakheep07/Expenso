@@ -2,10 +2,21 @@ package com.sakhee.finman.expenso.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.sakhee.finman.expenso.entity.FutureInvestmentHistory;
+import com.sakhee.finman.expenso.entity.User;
+import com.sakhee.finman.expenso.repository.FutureInvestmentHistoryRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class FutureInvestmentService {
 
-    // Determine the expected rate based on the user's risk level choice
+    @Autowired
+    private FutureInvestmentHistoryRepository historyRepository;
+
     public double getExpectedRate(String riskLevel) {
         switch (riskLevel) {
             case "smallCap":
@@ -19,15 +30,33 @@ public class FutureInvestmentService {
         }
     }
 
-    // Calculate SIP based on monthly investment, period, and expected rate
     public double calculateSIP(double monthlyInvestment, int investmentPeriod, double expectedRate) {
         double monthlyRate = expectedRate / 12 / 100;
         int totalMonths = investmentPeriod * 12;
 
-        // Calculate the future value using the SIP formula
         double futureValue = monthlyInvestment * (Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate * (1 + monthlyRate);
+        
         return futureValue;
     }
+
+    public void saveInvestmentHistory(double monthlyInvestment, int investmentPeriod, String riskLevel, double expectedRate, double futureValue, User user) {
+        FutureInvestmentHistory history = new FutureInvestmentHistory();
+        history.setMonthlyInvestment(monthlyInvestment);
+        history.setInvestmentPeriod(investmentPeriod);
+        history.setRiskLevel(riskLevel);
+        history.setExpectedRate(expectedRate);
+        history.setFutureValue(futureValue);
+        history.setUser(user);
+        history.setTimestamp(LocalDateTime.now());
+        
+        historyRepository.save(history);
+    }
+    
+    public List<FutureInvestmentHistory> getInvestmentHistory(User user) {
+        return historyRepository.findByUser(user);
+    }
+
 }
+
 
 
