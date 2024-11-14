@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #76c7c0, #f3ec78);
+            font-family: Arial, sans-serif;
+        }
+
+        .feedback-modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .feedback-options {
+            text-align: center;
+        }
+
+        .emojis {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .emoji {
+            font-size: 36px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .emoji:hover {
+            transform: scale(1.2);
+        }
+
+        .emoji-selected {
+            background-color: #007bff;
+            border-radius: 50%;
+            padding: 10px;
+            color: white;
+        }
+
+        .feedback-text {
+            margin-bottom: 20px;
+        }
+
+        .feedback-text textarea {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .animate__animated {
+            animation-duration: 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="feedback-modal">
+        <div class="modal-content animate__animated animate__fadeInDown">
+            <h2 class="modal-title">We want your opinion!</h2>
+            <div class="feedback-options">
+                <p>How satisfied are you with our product? *</p>
+                <div class="emojis">
+                    <span class="emoji emoji-very-bad" onclick="selectEmoji('very-bad')">😞</span>
+                    <span class="emoji emoji-bad" onclick="selectEmoji('bad')">😟</span>
+                    <span class="emoji emoji-neutral" onclick="selectEmoji('neutral')">😐</span>
+                    <span class="emoji emoji-good" onclick="selectEmoji('good')">😊</span>
+                    <span class="emoji emoji-very-good" onclick="selectEmoji('very-good')">😁</span>
+                </div>
+            </div>
+            <div class="feedback-text">
+                <label for="feedback">What do you like/not like about our product?</label>
+                <textarea id="feedback" rows="4" class="form-control" placeholder="Please fill in your answer"></textarea>
+            </div>
+            <button class="btn btn-primary submit-btn" onclick="submitFeedback()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedEmoji = null;
+
+        function selectEmoji(emojiClass) {
+            // Reset all selected emojis
+            document.querySelectorAll('.emoji').forEach(emoji => {
+                emoji.classList.remove('emoji-selected');
+            });
+
+            // Set the selected emoji
+            const selected = document.querySelector(`.emoji-${emojiClass}`);
+            if (selected) {
+                selected.classList.add('emoji-selected');
+                selectedEmoji = emojiClass;
+            }
+        }
+
+        function submitFeedback() {
+            const feedbackText = document.getElementById("feedback").value;
+
+            if (!selectedEmoji) {
+                alert("Please select an emoji!");
+                return;
+            }
+
+            if (feedbackText.trim() === "") {
+                alert("Please provide some feedback!");
+                return;
+            }
+
+            // Simulate sending feedback (replace with actual AJAX call)
+            alert(`Thanks for your feedback!\nEmoji: ${selectedEmoji}\nComment: ${feedbackText}`);
+
+            // Optionally, reset the form after submission
+            document.querySelectorAll('.emoji').forEach(emoji => {
+                emoji.classList.remove('emoji-selected');
+            });
+            document.getElementById("feedback").value = '';
+            selectedEmoji = null;
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

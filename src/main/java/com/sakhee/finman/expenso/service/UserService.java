@@ -15,5 +15,7 @@ public interface UserService {
     List<UserDto> findAllUsers();
 
 	Role findRoleByName(String role);
+
+	User getCurrentUser();
 }
 

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Financial Goals</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #76c7c0, #f3ec78);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        h1, h2 {
+            text-align: center;
+            font-size: 2em;
+            color: #444;
+        }
+
+        .goal-list, .goal-history {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+        }
+
+        .goal-card, .history-card {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .goal-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .goal-details, .history-details {
+            margin-top: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #76c7c0;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #68b2a7;
+        }
+
+        #add-goal {
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #add-goal form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #add-goal label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #add-goal input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #add-goal button {
+            padding: 10px;
+            background-color: #76c7c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #add-goal button:hover {
+            background-color: #68b2a7;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #76c7c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .button:hover {
+            background-color: #68b2a7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Track Your Financial Goals</h1>
+
+
+
+        <!-- Active Goals Section -->
+        <div class="goal-list" th:each="goal : ${goals}">
+            <div class="goal-card">
+                <div class="goal-title" th:text="${goal.name}"></div>
+                <div class="goal-details">
+                    <p>Target: <span th:text="${goal.targetAmount}"></span></p>
+                    <p>Saved: <span th:text="${goal.currentAmount}"></span></p>
+                    <p th:if="${goal.completed}">Completed on: <span th:text="${goal.completionDate}"></span></p>
+                    <p th:if="${!goal.completed}">Due Date: <span th:text="${goal.dueDate}"></span></p>
+                </div>
+                <div class="action-buttons">
+                    <form th:action="@{'/goals/update/' + ${goal.id}}" method="post">
+                        <input type="number" name="currentAmount" placeholder="New Amount" step="0.01" />
+                        <button type="submit">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section to Add New Goal -->
+        <section id="add-goal">
+            <h2>Add New Goal</h2>
+            <form action="#" th:action="@{/goals/add}" method="post">
+                <label for="goalName">Goal Name:</label>
+                <input type="text" id="goalName" name="name" required>
+                <label for="targetAmount">Target Amount:</label>
+                <input type="number" id="targetAmount" name="targetAmount" required>
+                <label for="dueDate">Completion Date:</label>
+                <input type="date" id="dueDate" name="dueDate" required>
+                <button type="submit">Save Goal</button>
+            </form>
+        </section>
+
+        <!-- Goal History Section -->
+        <h2>Goal History</h2>
+		<!-- Link to Goal History -->
+		<div style="text-align:center; margin-bottom: 20px;">
+		    <a href="/goals/history" class="button">View Goal History</a>
+		</div>
+        <div class="goal-history" th:each="history : ${goalHistory}">
+            <div class="history-card">
+                <div class="goal-title" th:text="${history.name}"></div>
+                <div class="history-details">
+                    <p>Target: <span th:text="${history.targetAmount}"></span></p>
+                    <p>Saved: <span th:text="${history.currentAmount}"></span></p>
+                    <p>Completion Date: <span th:text="${history.completionDate}"></span></p>
+                </div>
+            </div>
+        </div>
+		<!-- Redirect Button to User Dashboard -->
+		<div>
+			<a class="add-btn" th:href="@{/user-dashboard}">Back to Dashboard</a>
+		</div>
+    </div>
+	
+</body>
+</html>

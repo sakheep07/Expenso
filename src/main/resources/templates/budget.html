@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Budget Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #76c7c0, #f3ec78);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .chart-container {
+            margin-top: 40px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Budget Management</h1>
+
+    <form th:action="@{/budget/save}" th:object="${budgetDTO}" method="post">
+        <label for="category">Category:</label>
+        <input type="text" th:field="*{category}" required/>
+
+        <label for="allocatedAmount">Allocated Amount:</label>
+        <input type="number" th:field="*{allocatedAmount}" required/>
+
+        <label for="spentAmount">Spent Amount:</label>
+        <input type="number" th:field="*{spentAmount}" required/>
+
+        <button type="submit"><i class="fas fa-plus-circle"></i> Save Budget</button>
+    </form>
+
+    <h2>Budgets</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Allocated Amount</th>
+            <th>Spent Amount</th>
+            <th>Percentage Used</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="budget : ${budgets}">
+            <td th:text="${budget.category}"></td>
+            <td th:text="${budget.allocatedAmount}"></td>
+            <td th:text="${budget.spentAmount}"></td>
+            <td th:text="${(budget.spentAmount / budget.allocatedAmount) * 100} + '%'"></td>
+        </tr>
+        </tbody>
+    </table>
+
+	<!-- Redirect Button to User Dashboard -->
+	<div>
+		<a class="add-btn" th:href="@{/user-dashboard}">Back to Dashboard</a>
+	</div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get data from Thymeleaf model
+        var categoryLabels = /*[[${categories}]]*/ [];
+        var spentAmounts = /*[[${spentAmounts}]]*/ [];
+
+        // Pie Chart for Category Spending
+        var pieCtx = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: spentAmounts,
+                    backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f', '#9b59b6']
+                }]
+            }
+        });
+
+        // Line Chart for Spending Over Time
+        var lineCtx = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: categoryLabels,  // Use the same labels or dates if applicable
+                datasets: [{
+                    label: 'Spending Over Time',
+                    data: spentAmounts,
+                    borderColor: '#3498db',
+                    fill: false
+                }]
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #76c7c0, #f3ec78);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Currency Converter</h1>
+    
+    <form th:action="@{/currency-convert}" method="post">
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter amount" required/>
+            
+            <label for="fromCurrency">From Currency:</label>
+            <select id="fromCurrency" name="fromCurrency" required>
+                <option th:each="entry : ${currencies}" th:value="${entry.key}" th:text="${entry.key}"></option>
+            </select>
+
+            <label for="toCurrency">To Currency:</label>
+            <select id="toCurrency" name="toCurrency" required>
+                <option th:each="entry : ${currencies}" th:value="${entry.key}" th:text="${entry.key}"></option>
+            </select>
+            
+            <button type="submit">Convert</button>
+        </div>
+    </form>
+
+    <div class="result" th:if="${convertedAmount != null}">
+        <h2>Converted Amount: <span th:text="${convertedAmount}"></span> <span th:text="${toCurrency}"></span></h2>
+    </div>
+
+    <!-- View Conversion History Button -->
+    <div>
+        <a class="add-btn" th:href="@{/currency-history}">View Conversion History</a>
+    </div>
+</div>
+
+<!-- Redirect Button to User Dashboard -->
+<div>
+	<a class="add-btn" th:href="@{/user-dashboard}">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

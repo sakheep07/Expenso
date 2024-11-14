@@ -3,15 +3,110 @@
 <head>
     <title>Add Expense</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #a8e6cf, #ffd3b6);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #34495e;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #34495e;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Emoji styling */
+        h2::after {
+            content: " 💸";
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #34a8a1;
+            box-shadow: 0 0 8px rgba(52, 168, 161, 0.3);
+            outline: none;
+        }
+
+        button[type="submit"] {
+            background-color: #34a8a1;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2d8f86;
+        }
+
+        /* Submit button emoji */
+        button[type="submit"]::before {
+            content: "💾 ";
+            font-size: 1.2em;
+            margin-right: 8px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Animation keyframes */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+    </style>
 </head>
 <body>
     <h2>Add/Edit Expense</h2>
-    <form th:action="@{/expenses}" th:object="${expense}" method="post">
-        <input type="text" th:field="*{category}" placeholder="Category" required/>
-        <input type="number" step="0.01" th:field="*{amount}" placeholder="Amount" required/>
-        <input type="date" th:field="*{date}" required/>
-        <input type="text" th:field="*{note}" placeholder="Note"/>
-        <button type="submit">Save Expense</button>
-    </form>
+	<form th:action="@{${expenseId} == null ? '/expenses/save' : '/expenses/update/' + ${expenseId}}" 
+	      th:object="${expense}" method="post">
+	    <input type="text" th:field="*{category}" placeholder="Category" required/>
+	    <input type="number" step="0.01" th:field="*{amount}" placeholder="Amount" required/>
+	    <input type="date" th:field="*{date}" required/>
+	    <input type="text" th:field="*{note}" placeholder="Note"/>
+	    <button type="submit" th:text="${expenseId} == null ? 'Save Expense' : 'Update Expense'"></button>
+	</form>
 </body>
 </html>
+

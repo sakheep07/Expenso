@@ -1,10 +1,12 @@
 package com.sakhee.finman.expenso.dto;
 
+import java.math.BigDecimal;
+
 public class ExpenseDto {
 
     private Long id;
     private String category;
-	private double amount;
+	private BigDecimal amount;
     private String date;
     private String note;
     
@@ -22,10 +24,10 @@ public class ExpenseDto {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 	public String getDate() {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+    <title>About Expenso</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: thistle;
+            background-color: #f5f7fa;
             color: #333;
         }
 
@@ -129,47 +129,37 @@
 
 <!-- Header Section -->
 <header>
-    <h1>Expenso</h1>
+    <h1>About Expenso</h1>
     <p>Your smart solution for financial management and planning.</p>
 </header>
 
 <!-- Features Section -->
 <section id="features" class="container">
+    <h2 class="section-title">Why Choose Expenso?</h2>
     <div class="features-section">
         <div class="feature-card">
             <h3>Track Expenses</h3>
-            <a th:href="@{/expenses}" class="btn">View Expenses</a>
+            <p>Easily track all your expenses in one place, categorized by type and time for better budgeting.</p>
         </div>
         <div class="feature-card">
-            <h3>Track Income</h3>
-            <a th:href="@{/income}" class="btn">View Income</a>
-        </div>
-        <div class="feature-card">
-            <h3>Set Budget</h3>
-            <a th:href="@{/budget}" class="btn">View Budget</a>
+            <h3>Budget Planning</h3>
+            <p>Create monthly or yearly budgets, and receive notifications when you're close to exceeding them.</p>
         </div>
         <div class="feature-card">
             <h3>Financial Goals</h3>
-            <a th:href="@{/goals}" class="btn">View Goals</a>
-        </div>
-    </div>
-
-    <div class="features-section">
-        <div class="feature-card">
-            <h3>Generate Reports</h3>
-            <a th:href="@{/reports}" class="btn">Export Reports</a>
+            <p>Set and track your financial goals with progress bars, insights, and personalized advice.</p>
         </div>
         <div class="feature-card">
-            <h3>Currency Exchange</h3>
-            <a th:href="@{/currency-converter}" class="btn">Currency Converter</a>
+            <h3>Income Management</h3>
+            <p>Track your income from various sources and get detailed analysis reports on your earnings.</p>
         </div>
         <div class="feature-card">
-            <h3>Investment Planner</h3>
-            <a th:href="@{/future-investment}" class="btn">Future Investment</a>
+            <h3>Data Security</h3>
+            <p>With top-notch encryption, your data is always secure and protected.</p>
         </div>
         <div class="feature-card">
-            <h3>EMI Calculator</h3>
-            <a th:href="@{/loan-calculator}" class="btn">Loan Calculator</a>
+            <h3>Seamless Reports</h3>
+            <p>Generate insightful reports that help you visualize your financial habits over time.</p>
         </div>
     </div>
 </section>

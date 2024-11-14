@@ -1,119 +1,183 @@
-Is there anything wrong in this code:
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Expenso : Smart Finance Planning & Management</title>
+    <title>Expenso: Smart Finance Planning & Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background: linear-gradient(135deg, #76c7c0, #f3ec78);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            background-color: #333;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff !important;
+        }
+        .container {
+            margin-top: 3rem;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .card-header {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .card-header h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .btn-primary {
+            background-color: #4a90e2;
+            border-color: #4a90e2;
+            transition: 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #357ABD;
+            border-color: #357ABD;
+        }
+        .form-label::after {
+            content: ' *';
+            color: #ff5a5f;
+        }
+        .form-control:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+        }
+        .emoji {
+            font-size: 1.2rem;
+            vertical-align: middle;
+            margin-right: 0.3rem;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form-group span a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .form-group span a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Expenso : Smart Finance Planning & Management</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" th:href="@{/}">Expenso: Smart Finance Planning & Management</a>
     </div>
 </nav>
-<br />
-<br />
-<br />
+
 <div class="container">
     <div class="row col-md-8 offset-md-2">
         <div class="card">
             <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully registered
-                    to our app!</div>
+                <div class="alert alert-info">🎉 You've successfully registered to our app!</div>
             </div>
             <div class="card-header">
-                <h2 class="text-center">Registration</h2>
+                <h2><span class="emoji">📝</span> Registration</h2>
             </div>
             <div class="card-body">
                 <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
-
                     <div class="form-group mb-3">
-                        <label class="form-label">First Name</label>
+                        <label class="form-label"><span class="emoji">👤</span>First Name</label>
                         <input class="form-control"
                                id="firstName"
                                name="firstName"
                                placeholder="Enter first name"
                                th:field="*{firstName}"
                                type="text"
+                               required
                         />
-                        <p th:errors="*{firstName}" class="text-danger"
-                           th:if="${#fields.hasErrors('firstName')}">
-                        </p>
+                        <p th:errors="*{firstName}" class="text-danger"></p>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="form-label">Last Name</label>
+                        <label class="form-label"><span class="emoji">👤</span>Last Name</label>
                         <input class="form-control"
                                id="lastName"
                                name="lastName"
                                placeholder="Enter last name"
                                th:field="*{lastName}"
                                type="text"
+                               required
                         />
-                        <p th:errors="*{lastName}" class="text-danger"
-                           th:if="${#fields.hasErrors('lastName')}">
-                        </p>
+                        <p th:errors="*{lastName}" class="text-danger"></p>
                     </div>
-					
-					<!-- Role Selection Dropdown -->
-					        <div class="form-group mb-3">
-					            <label class="form-label">Role</label>
-					            <select class="form-control"
-					                    id="role"
-					                    name="role"
-					                    th:field="*{role}"
-					                    required>
-					                <option value="ROLE_USER">User</option>
-					                <option value="ROLE_ADMIN">Admin</option>
-					            </select>
-					            <p th:errors="*{role}" class="text-danger"
-					               th:if="${#fields.hasErrors('role')}">
-					            </p>
-					        </div>
-					
+
                     <div class="form-group mb-3">
-                        <label class="form-label">Email</label>
+                        <label class="form-label"><span class="emoji">🔗</span>Role</label>
+                        <select class="form-control"
+                                id="role"
+                                name="role"
+                                th:field="*{role}"
+                                required>
+                            <option value="ROLE_USER">User</option>
+                            <option value="ROLE_ADMIN">Admin</option>
+                        </select>
+                        <p th:errors="*{role}" class="text-danger"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label"><span class="emoji">📧</span>Email</label>
                         <input class="form-control"
                                id="email"
                                name="email"
                                placeholder="Enter email address"
                                th:field="*{email}"
                                type="email"
+							   autocomplete="off"
+                               required
                         />
-                        <p th:errors="*{email}" class="text-danger"
-                           th:if="${#fields.hasErrors('email')}">
-                        </p>
+                        <p th:errors="*{email}" class="text-danger"></p>
                     </div>
+
                     <div class="form-group mb-3">
-                        <label class="form-label">Password</label>
+                        <label class="form-label"><span class="emoji">🔒</span>Password</label>
                         <input class="form-control"
                                id="password"
                                name="password"
                                placeholder="Enter password"
                                th:field="*{password}"
                                type="password"
+							   autocomplete="off"
+                               required
                         />
-                        <p th:errors="*{password}" class="text-danger"
-                           th:if="${#fields.hasErrors('password')}">
-                        </p>
+                        <p th:errors="*{password}" class="text-danger"></p>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <button class="btn btn-primary" type="submit">Register</button>
-                        <span>Already registered? <a href="/" th:href="@{/login}">Login
-                             here</a></span>
+                    <div class="form-group mb-3 text-center">
+                        <button class="btn btn-primary" type="submit">Register <span class="emoji">🚀</span></button>
+                        <div class="mt-2">Already registered? <a th:href="@{/login}">Login here</a></div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-c7cD0bbRpjxXx85+phE2KBgHGNIJ/gj38t5p79AauMgyZL0owbsz2FIk5bDq7g5J"
+        crossorigin="anonymous"></script>
 </body>
 </html>

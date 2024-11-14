@@ -6,15 +6,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "expenses")
-public class Expense {
+@Table(name = "incomes")
+public class Income {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String category;
+    private String source; // e.g., Salary, Freelance
 
     @Column(nullable = false)
     private BigDecimal amount;
@@ -23,22 +23,13 @@ public class Expense {
     private LocalDate date;
 
     private String note;
-    
-    @ManyToOne // Many expenses can belong to one user
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key column
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     // Getters and Setters
-
-    public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -46,12 +37,12 @@ public class Expense {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getSource() {
+        return source;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public BigDecimal getAmount() {
@@ -76,6 +67,14 @@ public class Expense {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 
