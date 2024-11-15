@@ -1,5 +1,7 @@
 "# Expenso" 
 
+Database Details :
+
 CREATE DATABASE expenso;
 USE expenso;
 
